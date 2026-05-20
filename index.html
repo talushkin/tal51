@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>טל ארנון — סוף שבוע בכנרת</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Hebrew:wght@300;400;600;700&family=Heebo:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sand: #c8a96e;
+    --water: #1a3a5c;
+    --deep: #0a1e35;
+    --foam: #e8f4f8;
+    --star: #f5e6c0;
+    --accent: #e07b39;
+    --gold: #d4a843;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--deep);
+    color: var(--foam);
+    font-family: 'Heebo', sans-serif;
+    overflow-x: hidden;
+    direction: rtl;
+  }
+
+  /* ── Stars ── */
+  #stars-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.6;
+  }
+
+  /* ── Hero ── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  .hero-waves {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+  }
+
+  .wave {
+    position: absolute;
+    bottom: 0;
+    width: 200%;
+    height: 100%;
+    background: linear-gradient(transparent, rgba(26,58,92,0.6));
+  }
+
+  .wave-svg {
+    position: absolute;
+    bottom: 0;
+    width: 200%;
+    animation: wave-move 8s linear infinite;
+  }
+  .wave-svg:nth-child(2) { animation-delay: -4s; opacity: 0.5; }
+
+  @keyframes wave-move {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  .hero-eyebrow {
+    font-family: 'Heebo', sans-serif;
+    font-weight: 300;
+    font-size: clamp(0.9rem, 2vw, 1.1rem);
+    letter-spacing: 0.3em;
+    color: var(--sand);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fade-up 1s 0.3s forwards;
+  }
+
+  .hero-name {
+    font-family: 'Noto Serif Hebrew', serif;
+    font-weight: 700;
+    font-size: clamp(3.5rem, 10vw, 8rem);
+    line-height: 1;
+    color: var(--star);
+    text-shadow: 0 0 80px rgba(212,168,67,0.3);
+    margin-bottom: 0.3em;
+    opacity: 0;
+    animation: fade-up 1s 0.6s forwards;
+  }
+
+  .hero-subtitle {
+    font-family: 'Noto Serif Hebrew', serif;
+    font-weight: 300;
+    font-size: clamp(1.4rem, 4vw, 2.2rem);
+    color: var(--sand);
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fade-up 1s 0.9s forwards;
+  }
+
+  .hero-dates {
+    font-family: 'Heebo', sans-serif;
+    font-weight: 300;
+    font-size: clamp(1rem, 3vw, 1.5rem);
+    color: rgba(232,244,248,0.8);
+    letter-spacing: 0.15em;
+    opacity: 0;
+    animation: fade-up 1s 1.2s forwards;
+  }
+
+  .hero-location {
+    margin-top: 0.6rem;
+    font-size: clamp(0.85rem, 2vw, 1.05rem);
+    color: var(--sand);
+    opacity: 0;
+    animation: fade-up 1s 1.5s forwards;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    opacity: 0;
+    animation: fade-up 1s 2s forwards;
+    cursor: pointer;
+    color: rgba(232,244,248,0.5);
+    font-size: 0.8rem;
+  }
+  .scroll-arrow {
+    width: 24px;
+    height: 24px;
+    border-left: 2px solid rgba(232,244,248,0.4);
+    border-bottom: 2px solid rgba(232,244,248,0.4);
+    transform: rotate(-45deg);
+    animation: bounce 2s infinite;
+  }
+  @keyframes bounce {
+    0%, 100% { transform: rotate(-45deg) translateY(0); }
+    50% { transform: rotate(-45deg) translateY(6px); }
+  }
+
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── Sections ── */
+  section {
+    position: relative;
+    z-index: 1;
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 5rem 2rem;
+  }
+
+  .divider {
+    text-align: center;
+    color: var(--gold);
+    font-size: 1.5rem;
+    letter-spacing: 0.8em;
+    opacity: 0.6;
+    margin: 1.5rem 0;
+  }
+
+  .section-label {
+    font-family: 'Heebo', sans-serif;
+    font-weight: 300;
+    font-size: 0.8rem;
+    letter-spacing: 0.4em;
+    color: var(--sand);
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+
+  h2.section-title {
+    font-family: 'Noto Serif Hebrew', serif;
+    font-weight: 600;
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    text-align: center;
+    color: var(--star);
+    margin-bottom: 2.5rem;
+    line-height: 1.3;
+  }
+
+  /* ── Letter ── */
+  .letter-body {
+    font-size: 1.1rem;
+    line-height: 2;
+    color: rgba(232,244,248,0.85);
+    font-weight: 300;
+    max-width: 650px;
+    margin: 0 auto;
+  }
+  .letter-body p { margin-bottom: 1.4em; }
+  .letter-signature {
+    font-family: 'Noto Serif Hebrew', serif;
+    font-size: 1.1rem;
+    color: var(--sand);
+    text-align: left;
+    margin-top: 2rem;
+  }
+
+  /* ── Schedule ── */
+  .day-block {
+    background: rgba(26,58,92,0.4);
+    border: 1px solid rgba(200,169,110,0.25);
+    border-radius: 20px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    backdrop-filter: blur(4px);
+  }
+
+  .day-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .day-badge {
+    background: rgba(212,168,67,0.15);
+    border: 1px solid rgba(212,168,67,0.4);
+    border-radius: 50px;
+    padding: 0.35rem 1.2rem;
+    font-size: 0.9rem;
+    color: var(--gold);
+    white-space: nowrap;
+  }
+  .day-title {
+    font-family: 'Noto Serif Hebrew', serif;
+    font-size: 1.4rem;
+    color: var(--star);
+  }
+
+  .schedule-item {
+    display: flex;
+    gap: 1.2rem;
+    margin-bottom: 1rem;
+    align-items: flex-start;
+  }
+  .schedule-time {
+    font-size: 0.85rem;
+    color: var(--sand);
+    min-width: 75px;
+    padding-top: 0.15rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+  }
+  .schedule-text {
+    color: rgba(232,244,248,0.8);
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+  .schedule-text strong { color: var(--foam); font-weight: 500; }
+
+  .note-box {
+    margin-top: 1.2rem;
+    padding: 0.8rem 1rem;
+    background: rgba(224,123,57,0.1);
+    border-right: 3px solid var(--accent);
+    border-radius: 0 10px 10px 0;
+    font-size: 0.88rem;
+    color: rgba(232,244,248,0.7);
+    line-height: 1.6;
+  }
+
+  /* ── RSVP ── */
+  .rsvp-container {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .tab-btn {
+    background: transparent;
+    border: 1px solid rgba(200,169,110,0.35);
+    border-radius: 50px;
+    padding: 0.5rem 1.5rem;
+    color: var(--sand);
+    font-family: 'Heebo', sans-serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.25s;
+  }
+  .tab-btn.active, .tab-btn:hover {
+    background: rgba(212,168,67,0.15);
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+
+  .rsvp-form { display: none; }
+  .rsvp-form.active { display: block; }
+
+  .form-group {
+    margin-bottom: 1.2rem;
+  }
+  label {
+    display: block;
+    font-size: 0.88rem;
+    color: var(--sand);
+    margin-bottom: 0.4rem;
+  }
+  input[type="text"], textarea, select {
+    width: 100%;
+    background: rgba(10,30,53,0.6);
+    border: 1px solid rgba(200,169,110,0.3);
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    color: var(--foam);
+    font-family: 'Heebo', sans-serif;
+    font-size: 0.95rem;
+    transition: border-color 0.2s;
+    direction: rtl;
+  }
+  input[type="text"]:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: var(--gold);
+  }
+  textarea { min-height: 90px; resize: vertical; }
+  select option { background: #0a1e35; }
+
+  .radio-group {
+    display: flex;
+    gap: 0.7rem;
+    flex-wrap: wrap;
+  }
+  .radio-btn {
+    background: rgba(10,30,53,0.6);
+    border: 1px solid rgba(200,169,110,0.3);
+    border-radius: 50px;
+    padding: 0.45rem 1.1rem;
+    color: rgba(232,244,248,0.7);
+    font-size: 0.88rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+  }
+  .radio-btn.selected {
+    background: rgba(212,168,67,0.15);
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+
+  .submit-btn {
+    width: 100%;
+    padding: 0.9rem;
+    background: linear-gradient(135deg, rgba(212,168,67,0.2), rgba(224,123,57,0.2));
+    border: 1px solid var(--gold);
+    border-radius: 50px;
+    color: var(--gold);
+    font-family: 'Heebo', sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.25s;
+    margin-top: 1rem;
+  }
+  .submit-btn:hover { background: rgba(212,168,67,0.3); }
+  .submit-btn:disabled { opacity: 0.5; cursor: default; }
+
+  .success-message {
+    text-align: center;
+    padding: 2rem;
+    display: none;
+  }
+  .success-icon { font-size: 3rem; margin-bottom: 1rem; }
+  .success-title {
+    font-family: 'Noto Serif Hebrew', serif;
+    font-size: 1.5rem;
+    color: var(--star);
+    margin-bottom: 0.5rem;
+  }
+  .success-sub { color: rgba(232,244,248,0.6); font-size: 0.95rem; }
+
+  /* ── Who's coming ── */
+  .coming-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 0.7rem;
+    margin-top: 1rem;
+  }
+  .guest-card {
+    background: rgba(26,58,92,0.35);
+    border: 1px solid rgba(200,169,110,0.2);
+    border-radius: 12px;
+    padding: 0.8rem 1rem;
+  }
+  .guest-name { font-weight: 500; color: var(--foam); font-size: 0.95rem; }
+  .guest-meta { font-size: 0.8rem; color: var(--sand); margin-top: 0.2rem; }
+  .guest-blessing {
+    font-size: 0.82rem;
+    color: rgba(232,244,248,0.6);
+    margin-top: 0.4rem;
+    font-style: italic;
+    line-height: 1.4;
+  }
+  .empty-state {
+    text-align: center;
+    padding: 2rem;
+    color: rgba(232,244,248,0.4);
+    font-size: 0.95rem;
+  }
+
+  /* ── Footer ── */
+  footer {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 3rem 2rem;
+    color: rgba(232,244,248,0.3);
+    font-size: 0.85rem;
+    border-top: 1px solid rgba(200,169,110,0.1);
+  }
+  footer strong { color: var(--sand); }
+
+  /* ── Scroll reveal ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s, transform 0.7s;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── Waterline separator ── */
+  .waterline {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+    height: 60px;
+  }
+  .waterline svg { display: block; width: 100%; }
+
+  @media (max-width: 600px) {
+    section { padding: 3rem 1.2rem; }
+    .schedule-item { flex-direction: column; gap: 0.2rem; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="stars-canvas"></canvas>
+
+<!-- HERO -->
+<div class="hero">
+  <p class="hero-eyebrow">הזמנה אישית</p>
+  <h1 class="hero-name">טל ארנון</h1>
+  <p class="hero-subtitle">סוף שבוע על הכנרת</p>
+  <p class="hero-dates">26–27 יוני 2025</p>
+  <p class="hero-location">✦ חוף חוקוק, כנרת ✦</p>
+
+  <div class="hero-waves">
+    <svg class="wave-svg" viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg">
+      <path fill="rgba(26,58,92,0.5)" d="M0,40 C240,80 480,0 720,40 C960,80 1200,0 1440,40 L1440,80 L0,80 Z"/>
+    </svg>
+    <svg class="wave-svg" viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" style="bottom:0;opacity:0.4">
+      <path fill="rgba(10,30,53,0.8)" d="M0,50 C360,20 720,70 1080,30 C1260,15 1380,55 1440,40 L1440,80 L0,80 Z"/>
+    </svg>
+  </div>
+
+  <div class="scroll-hint" onclick="document.getElementById('letter').scrollIntoView({behavior:'smooth'})">
+    גלול
+    <div class="scroll-arrow"></div>
+  </div>
+</div>
+
+<!-- LETTER -->
+<section id="letter" class="reveal">
+  <div class="section-label">מכתב הזמנה</div>
+  <h2 class="section-title">בואו לחגוג עם טל</h2>
+  <div class="divider">✦ · ✦ · ✦</div>
+  <div class="letter-body">
+    <p>חברים ומשפחה יקרים,</p>
+    <p>מזמין/ת אתכם לסוף שבוע מיוחד ביחד — לילה וירח מעל הכנרת, אוויר של קיץ ישראלי אמיתי, ורגעים שנזכור ביחד.</p>
+    <p>חוף חוקוק מחכה לנו — חול, מים, שמיים. יום שישי בערב נרקוד וניהנה, שבת בבוקר נשחה ונירגע. פשוט ככה.</p>
+    <p>אשמח מאוד לראות אתכם שם — בואו כמו שאתם, עם חיוך ועם תאבון.</p>
+    <div class="divider" style="font-size:1rem;margin:1rem 0">· · ·</div>
+    <p class="letter-signature">— טל ❤</p>
+  </div>
+</section>
+
+<!-- SCHEDULE -->
+<div class="waterline" aria-hidden="true">
+  <svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg">
+    <path fill="rgba(26,58,92,0.25)" d="M0,30 C480,60 960,0 1440,30 L1440,60 L0,60 Z"/>
+  </svg>
+</div>
+
+<section class="reveal">
+  <div class="section-label">לוח הזמנים</div>
+  <h2 class="section-title">יומיים של שמחה</h2>
+  <div class="divider">✦</div>
+
+  <div class="day-block">
+    <div class="day-header">
+      <span class="day-badge">שישי · 26 יוני</span>
+      <span class="day-title">ערב על החוף 🔥</span>
+    </div>
+    <div class="schedule-item">
+      <span class="schedule-time">16:00+</span>
+      <span class="schedule-text"><strong>הגעה ופריסת אוהלים</strong> — מגיעים, מתאווררים, נכנסים למים</span>
+    </div>
+    <div class="schedule-item">
+      <span class="schedule-time">~19:30</span>
+      <span class="schedule-text"><strong>ארוחת ערב משותפת</strong> — כל אחד מביא משהו לאכול ומשהו לשתות לשולחן המשותף</span>
+    </div>
+    <div class="schedule-item">
+      <span class="schedule-time">אחרי האוכל</span>
+      <span class="schedule-text"><strong>מדורה, ברכות וריקודים</strong> תחת הכוכבים — עד מתי שרוצים</span>
+    </div>
+    <div class="schedule-item">
+      <span class="schedule-time">לילה</span>
+      <span class="schedule-text"><strong>לינה על החוף</strong> — תביאו אוהל / מזרן / שק שינה</span>
+    </div>
+    <div class="note-box">
+      🎒 מה להביא: אוהל/מזרן, שק שינה, מגבת, קרם שמש, כלי שתייה, ומנה אחת לשיתוף בארוחה
+    </div>
+  </div>
+
+  <div class="day-block">
+    <div class="day-header">
+      <span class="day-badge">שבת · 27 יוני</span>
+      <span class="day-title">יום כנרת ☀️</span>
+    </div>
+    <div class="schedule-item">
+      <span class="schedule-time">10:00+</span>
+      <span class="schedule-text"><strong>הגעה לאלה שלא ישנו</strong> — מי שלא הגיע בשישי מוזמן לצטרף בבוקר</span>
+    </div>
+    <div class="schedule-item">
+      <span class="schedule-time">כל היום</span>
+      <span class="schedule-text"><strong>שחייה, שמש ושיחות</strong> — כנרת, חברים, שלווה אמיתית</span>
+    </div>
+    <div class="schedule-item">
+      <span class="schedule-time">שעת צהריים</span>
+      <span class="schedule-text"><strong>ארוחה עצמאית</strong> — כל אחד/ת דואג לעצמו ולמשפחתו</span>
+    </div>
+    <div class="note-box">
+      ☀️ אנחנו נביא פירות, ירקות ולחם לבוקר — שאר האוכל כל אחד על עצמו
+    </div>
+  </div>
+</section>
+
+<!-- RSVP -->
+<div class="waterline" aria-hidden="true">
+  <svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg">
+    <path fill="rgba(26,58,92,0.2)" d="M0,20 C360,60 1080,0 1440,35 L1440,60 L0,60 Z"/>
+  </svg>
+</div>
+
+<section class="reveal" id="rsvp-section">
+  <div class="section-label">אישור הגעה</div>
+  <h2 class="section-title">מגיעים? 🎉</h2>
+  <div class="divider">✦</div>
+
+  <div class="rsvp-container">
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('friday')">🔥 שישי בלבד</button>
+      <button class="tab-btn" onclick="switchTab('both')">🌊 שישי + שבת</button>
+      <button class="tab-btn" onclick="switchTab('saturday')">☀️ שבת בלבד</button>
+      <button class="tab-btn" onclick="switchTab('blessing')">💙 ברכה מרחוק</button>
+    </div>
+
+    <div id="form-friday" class="rsvp-form active">
+      <div class="form-group">
+        <label>השם שלך</label>
+        <input type="text" id="name-friday" placeholder="שם מלא">
+      </div>
+      <div class="form-group">
+        <label>מגיע/ה עם</label>
+        <div class="radio-group" id="with-friday">
+          <span class="radio-btn" onclick="selectRadio('with-friday',this)">לבד</span>
+          <span class="radio-btn" onclick="selectRadio('with-friday',this)">עם בן/בת זוג</span>
+          <span class="radio-btn" onclick="selectRadio('with-friday',this)">עם חברים</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>ברכה לטל (תוצג לכולם) ✨</label>
+        <textarea id="blessing-friday" placeholder="כתוב/י ברכה חמה..."></textarea>
+      </div>
+      <button class="submit-btn" onclick="submitRSVP('friday')">אני מגיע/ה בשישי ✦</button>
+      <div class="success-message" id="success-friday">
+        <div class="success-icon">🌊</div>
+        <div class="success-title">מחכים לך ליד האש!</div>
+        <div class="success-sub">הגעתך נרשמה — נתראה ב-26.6 בחוף חוקוק ✨</div>
+      </div>
+    </div>
+
+    <div id="form-both" class="rsvp-form">
+      <div class="form-group">
+        <label>השם שלך</label>
+        <input type="text" id="name-both" placeholder="שם מלא">
+      </div>
+      <div class="form-group">
+        <label>מגיע/ה עם</label>
+        <div class="radio-group" id="with-both">
+          <span class="radio-btn" onclick="selectRadio('with-both',this)">לבד</span>
+          <span class="radio-btn" onclick="selectRadio('with-both',this)">עם בן/בת זוג</span>
+          <span class="radio-btn" onclick="selectRadio('with-both',this)">עם ילדים</span>
+          <span class="radio-btn" onclick="selectRadio('with-both',this)">כל המשפחה</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>ברכה לטל ✨</label>
+        <textarea id="blessing-both" placeholder="כתוב/י ברכה חמה..."></textarea>
+      </div>
+      <button class="submit-btn" onclick="submitRSVP('both')">אני מגיע/ה לשני הימים 🌊</button>
+      <div class="success-message" id="success-both">
+        <div class="success-icon">✨</div>
+        <div class="success-title">כל הכבוד — שני ימים שלמים!</div>
+        <div class="success-sub">נתראה ב-26.6 בחוף חוקוק ☀️</div>
+      </div>
+    </div>
+
+    <div id="form-saturday" class="rsvp-form">
+      <div class="form-group">
+        <label>השם שלך</label>
+        <input type="text" id="name-saturday" placeholder="שם מלא">
+      </div>
+      <div class="form-group">
+        <label>מגיע/ה עם</label>
+        <div class="radio-group" id="with-saturday">
+          <span class="radio-btn" onclick="selectRadio('with-saturday',this)">לבד</span>
+          <span class="radio-btn" onclick="selectRadio('with-saturday',this)">עם בן/בת זוג</span>
+          <span class="radio-btn" onclick="selectRadio('with-saturday',this)">עם ילדים</span>
+          <span class="radio-btn" onclick="selectRadio('with-saturday',this)">כל המשפחה</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>ברכה לטל ✨</label>
+        <textarea id="blessing-saturday" placeholder="כתוב/י ברכה..."></textarea>
+      </div>
+      <button class="submit-btn" onclick="submitRSVP('saturday')">אני מגיע/ה בשבת ☀️</button>
+      <div class="success-message" id="success-saturday">
+        <div class="success-icon">☀️</div>
+        <div class="success-title">נתראה בשבת על החוף!</div>
+        <div class="success-sub">הגעתך נרשמה — נתראה ב-27.6 בחוף חוקוק</div>
+      </div>
+    </div>
+
+    <div id="form-blessing" class="rsvp-form">
+      <div class="form-group">
+        <label>השם שלך</label>
+        <input type="text" id="name-blessing" placeholder="שם מלא">
+      </div>
+      <div class="form-group">
+        <label>ברכה לטל מרחוק 💙</label>
+        <textarea id="blessing-blessing" placeholder="שולחים אהבה מרחוק..."></textarea>
+      </div>
+      <button class="submit-btn" onclick="submitRSVP('blessing')">שולח/ת ברכה 💙</button>
+      <div class="success-message" id="success-blessing">
+        <div class="success-icon">💙</div>
+        <div class="success-title">תודה על הברכה!</div>
+        <div class="success-sub">מרגישים את האהבה גם מרחוק 💙</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHO'S COMING -->
+<section class="reveal" id="guests-section">
+  <div class="section-label">FOMO בשיאו</div>
+  <h2 class="section-title">מי כבר אישר הגעה?</h2>
+  <div class="divider">✦</div>
+
+  <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1.5rem;justify-content:center">
+    <div style="text-align:center;background:rgba(26,58,92,0.4);border:1px solid rgba(200,169,110,0.2);border-radius:14px;padding:1rem 1.5rem;min-width:120px">
+      <div style="font-size:2rem;font-weight:700;color:var(--gold)" id="count-friday">0</div>
+      <div style="font-size:0.8rem;color:var(--sand)">בשישי</div>
+    </div>
+    <div style="text-align:center;background:rgba(26,58,92,0.4);border:1px solid rgba(200,169,110,0.2);border-radius:14px;padding:1rem 1.5rem;min-width:120px">
+      <div style="font-size:2rem;font-weight:700;color:var(--gold)" id="count-saturday">0</div>
+      <div style="font-size:0.8rem;color:var(--sand)">בשבת</div>
+    </div>
+    <div style="text-align:center;background:rgba(26,58,92,0.4);border:1px solid rgba(200,169,110,0.2);border-radius:14px;padding:1rem 1.5rem;min-width:120px">
+      <div style="font-size:2rem;font-weight:700;color:var(--gold)" id="count-blessing">0</div>
+      <div style="font-size:0.8rem;color:var(--sand)">ברכות מרחוק</div>
+    </div>
+  </div>
+
+  <div class="coming-grid" id="guests-grid">
+    <div class="empty-state" style="grid-column:1/-1">עדיין מחכים לאישורים... היה הראשון/ה! 🌊</div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>26–27 יוני 2025 · חוף חוקוק, כנרת</p>
+  <p style="margin-top:0.5rem">עם אהבה ל <strong>טל ארנון</strong> · נוצר בעזרת Claude AI</p>
+</footer>
+
+<script>
+// ── Stars canvas ──
+const canvas = document.getElementById('stars-canvas');
+const ctx = canvas.getContext('2d');
+let stars = [];
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+
+function initStars() {
+  stars = [];
+  for (let i = 0; i < 200; i++) {
+    stars.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height * 0.7,
+      r: Math.random() * 1.5 + 0.3,
+      alpha: Math.random() * 0.8 + 0.2,
+      speed: Math.random() * 0.005 + 0.002,
+      phase: Math.random() * Math.PI * 2
+    });
+  }
+}
+
+function drawStars(t) {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  stars.forEach(s => {
+    const a = s.alpha * (0.7 + 0.3 * Math.sin(t * s.speed + s.phase));
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(245,230,192,${a})`;
+    ctx.fill();
+  });
+  requestAnimationFrame(drawStars);
+}
+
+resizeCanvas();
+initStars();
+requestAnimationFrame(drawStars);
+window.addEventListener('resize', () => { resizeCanvas(); initStars(); });
+
+// ── Scroll reveal ──
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ── Tabs ──
+function switchTab(id) {
+  document.querySelectorAll('.tab-btn').forEach((b,i) => {
+    b.classList.toggle('active', ['friday','both','saturday','blessing'][i] === id);
+  });
+  document.querySelectorAll('.rsvp-form').forEach(f => f.classList.remove('active'));
+  document.getElementById('form-' + id).classList.add('active');
+}
+
+// ── Radio buttons ──
+function selectRadio(groupId, el) {
+  document.querySelectorAll('#' + groupId + ' .radio-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+// ── Storage key ──
+const STORAGE_KEY = 'tal-arnon-guests-v1';
+
+async function loadGuests() {
+  try {
+    const result = await window.storage.get(STORAGE_KEY, true);
+    return result ? JSON.parse(result.value) : [];
+  } catch { return []; }
+}
+
+async function saveGuests(guests) {
+  try {
+    await window.storage.set(STORAGE_KEY, JSON.stringify(guests), true);
+  } catch(e) { console.error(e); }
+}
+
+// ── Render guests ──
+function renderGuests(guests) {
+  const friday = guests.filter(g => g.day === 'friday' || g.day === 'both');
+  const saturday = guests.filter(g => g.day === 'saturday' || g.day === 'both');
+  const blessings = guests.filter(g => g.day === 'blessing');
+
+  document.getElementById('count-friday').textContent = friday.length;
+  document.getElementById('count-saturday').textContent = saturday.length;
+  document.getElementById('count-blessing').textContent = blessings.length;
+
+  const grid = document.getElementById('guests-grid');
+  if (guests.length === 0) {
+    grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1">עדיין מחכים לאישורים... היה הראשון/ה! 🌊</div>';
+    return;
+  }
+
+  grid.innerHTML = guests.map(g => {
+    const dayLabel = {friday:'שישי 🔥', both:'שישי + שבת 🌊', saturday:'שבת ☀️', blessing:'מרחוק 💙'}[g.day] || g.day;
+    return `<div class="guest-card">
+      <div class="guest-name">${escHtml(g.name)}</div>
+      <div class="guest-meta">${dayLabel}${g.with ? ' · ' + escHtml(g.with) : ''}</div>
+      ${g.blessing ? `<div class="guest-blessing">"${escHtml(g.blessing)}"</div>` : ''}
+    </div>`;
+  }).join('');
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── Submit RSVP ──
+async function submitRSVP(type) {
+  const name = document.getElementById('name-' + type).value.trim();
+  if (!name) { alert('אנא הכנס/י שם'); return; }
+
+  const withEl = document.querySelector('#with-' + type + ' .radio-btn.selected');
+  const blessing = document.getElementById('blessing-' + type).value.trim();
+
+  const btn = document.querySelector('#form-' + type + ' .submit-btn');
+  btn.disabled = true;
+  btn.textContent = 'שומר...';
+
+  const guest = {
+    id: Date.now() + Math.random(),
+    name,
+    day: type,
+    with: withEl ? withEl.textContent : '',
+    blessing,
+    ts: new Date().toISOString()
+  };
+
+  const guests = await loadGuests();
+  guests.unshift(guest);
+  await saveGuests(guests);
+  renderGuests(guests);
+
+  document.querySelector('#form-' + type + ' form-group') && null;
+  document.querySelector('#form-' + type).querySelectorAll('input,textarea').forEach(el => el.value = '');
+  document.querySelector('#form-' + type + ' .submit-btn').style.display = 'none';
+
+  const succ = document.getElementById('success-' + type);
+  succ.style.display = 'block';
+}
+
+// ── Init ──
+(async () => {
+  const guests = await loadGuests();
+  renderGuests(guests);
+})();
+</script>
+</body>
+</html>
